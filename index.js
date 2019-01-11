@@ -3,6 +3,7 @@ const express = require('express');
 
 const app = express();
 
+<<<<<<< HEAD
 app.get('/greeting', (req, res) => {
   res.send({hi: 'Hellow World'});
 });
