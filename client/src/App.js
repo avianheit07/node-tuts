@@ -19,6 +19,7 @@ class App extends Component {
           >
             Learn React
           </a>
+          <a href="/greeting">Click me</a>
         </header>
       </div>
     );
