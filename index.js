@@ -1,5 +1,7 @@
 const express = require('express');
 const fetch = require('node-fetch');
+// const adminRoutes = require('./routes/admin');
+const siteRoutes = require('./routes/site');
 // import express from 'express';
 
 const app = express();
@@ -8,7 +10,12 @@ app.get('/greeting', (req, res) => {
   res.send({hi: 'Hellow World'});
 });
 app.get('/', (req, res) => {
-  res.send('<h1> Welcome to Homepage</h1>');
+  res.json({data: null, message: 'Can\'t handle request', error: 'Not Found'});
+});
+// app.use(adminRoutes);
+app.use(siteRoutes);
+app.use((req, res, next) => {
+  res.status(404).send({result: 'Page not found'})
 });
 // https://rallycoding.herokuapp.com/api/music_albums
 // function fetchAlbum() {
