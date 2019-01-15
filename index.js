@@ -12,7 +12,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.get('/', (req, res, next) => {
   res.json({data: null, message: 'Home middleware', error: 'Not Found'});
 });
-app.use('/admin', siteRoutes);
+app.use('/admin', siteRoutes.routes);
 app.use((req, res, next) => {
   res.sendFile(path.join(__dirname, 'views', '404.html'))
 });
