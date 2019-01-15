@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route} from 'react-router-dom';
 import { connect } from 'react-redux';
-import * as actions from '../actions';
+import * as actions from '../../actions';
 import axios from 'axios';
+import logo from '../../images/icon.jpg';
 
 class Sites extends Component {
 
@@ -18,7 +19,6 @@ class Sites extends Component {
 
       axios.get('/api/site')
         .then(res => {
-          console.log('called ', res.data.data)
           this.setState({sites: res.data.data})
         });
   }
@@ -26,17 +26,22 @@ class Sites extends Component {
   render() {
     return (
       <div>
-        <h1>Sites List here</h1>
-        <ul>
-        {
+        <ul className="collection with-header">
+					<li className="collection-header"><h3> Sites </h3></li>
+            {
               this.state.sites.map( (site, index) => {
                 return (
-                    <li>
-                      {site.name}
+                    <li className="collection-item avatar" id={site.id} key={"key_site_" + site.id}>
+                      <img src={logo} alt="" className="circle" />
+                      <span className="title"> {site.name} </span>
+                      <p> Url: {site.url} <br/>
+                      Acronym: {site.acronym}
+                      </p>
+                      <a href="/sites/edit" className="secondary-content"><i className="material-icons">Edit</i></a>
                     </li>
                   )
                 }, this)
-          }
+              }
         </ul>
       </div>
     );
