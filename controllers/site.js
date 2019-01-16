@@ -9,11 +9,13 @@ exports.getSitelist = (req, res, next) => {
 }
 
 exports.getSitelist2 = (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../', 'views', 'site.html'));
+  // res.sendFile(path.join(__dirname, '../', 'views', 'site.html'));
+  res.render('site', {props_sites: sites, docTitle: 'Test Title'})
 }
 
 exports.addSite = (req, res, next) => {
-  res.sendFile(path.join(__dirname, '../', 'views', 'add_site.html'));
+  // res.sendFile(path.join(__dirname, '../', 'views', 'add_site.html'));
+  res.render('add_site');
   // res.json({data: null, message: 'Add Site'});
   // const site = new Site(req.body.name);
   //
@@ -26,7 +28,7 @@ exports.saveSite = (req, res, next) => {
 
   console.log(req.body.site);
   sites.push({name: site})
-  res.send({data: site, message: 'Data saved'});
+  res.redirect("/admin/site/list");
 }
 
 exports.showSites = (req, res, next) => {
