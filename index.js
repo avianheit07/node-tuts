@@ -6,6 +6,8 @@ const app = express();
 const path = require('path');
 const jsonParser = bodyParser.json({type: 'application/*+json'});
 
+app.set('view engine', 'pug');
+app.set('views', 'views');
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')))
