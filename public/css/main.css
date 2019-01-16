@@ -106,3 +106,9 @@ main {
   background-color: #00695c;
   color: white;
 }
+
+.product-form {
+  width: 20rem;
+  max-width: 90%;
+  margin: auto;
+}
