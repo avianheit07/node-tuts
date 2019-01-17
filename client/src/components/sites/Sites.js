@@ -19,6 +19,7 @@ class Sites extends Component {
 
       axios.get('/api/site')
         .then(res => {
+					console.log('called')
           this.setState({sites: res.data.data})
         });
   }
@@ -37,7 +38,7 @@ class Sites extends Component {
                       <p> Url: {site.url} <br/>
                       Acronym: {site.acronym}
                       </p>
-                      <a href="/sites/edit" className="secondary-content"><i className="material-icons">Edit</i></a>
+                      <a href={"/sites/edit/" + site.id} className="secondary-content"><i className="material-icons">Edit</i></a>
                     </li>
                   )
                 }, this)
