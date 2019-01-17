@@ -23,7 +23,6 @@ class Sites extends Component {
           this.setState({sites: res.data.data})
         });
   }
-
   render() {
     return (
       <div>
@@ -38,7 +37,7 @@ class Sites extends Component {
                       <p> Url: {site.url} <br/>
                       Acronym: {site.acronym}
                       </p>
-                      <a href={"/sites/edit/" + site.id} className="secondary-content"><i className="material-icons">Edit</i></a>
+                      <a className="secondary-content" href={"/sites/edit/" + site.id}><i className="material-icons">Edit</i></a>
                     </li>
                   )
                 }, this)
