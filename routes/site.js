@@ -3,12 +3,11 @@ const router  = express.Router();
 const sites   = [];
 const sitesController = require('../controllers/site.js')
 
-router.get('/site', sitesController.getSitelist);
-router.get('/site/list', sitesController.getSitelist2);
-router.get('/site/show', sitesController.showSites);
-router.get('/site/new', sitesController.addSite);
-router.post('/site/add', sitesController.saveSite);
-// module.exports = router;
+router.get('/site/', sitesController.getSitelist2);
+router.get('/site/add', sitesController.addSite);
+router.get('/site/edit/:id', sitesController.editSite);
+router.post('/site/save', sitesController.saveSite);
+router.post('/site/update', sitesController.updateSite);
 
 exports.routes = router;
 exports.sites = sites;
