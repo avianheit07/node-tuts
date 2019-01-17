@@ -2,7 +2,15 @@ const fs = require('fs');
 const path = require('path');
 const randomString = require('random-string');
 const file_path = path.join(__dirname, '..', 'dummy_data', 'sites.json');
+const lorem = require('lorem-ipsum')
 
+const getSitesFromFile = (callback) => {
+  fs.readFile(file_path, (err, data) => {
+    let sites = [];
+    sites = JSON.parse(data);
+    callback(sites);
+  });
+}
 module.exports = class Site {
   constructor(new_site) {
     this.id = Math.ceil(Math.random() * (100000 - 1));
@@ -10,7 +18,7 @@ module.exports = class Site {
     this.url = 'www.' + randomString({length:10}) + '.com';
     this.acronym = randomString({length:3})
     this.site_order = Math.ceil(Math.random() * (100 - 1));
-    this.description = randomString({length: 100})
+    this.description = lorem({count: 2, units:'paragraphs'})
     this.tags = randomString({length: 100})
     this.niche = randomString({length: 100})
     this.bg_image = ''
@@ -78,46 +86,32 @@ module.exports = class Site {
       }
     });
   }
-  static edit(id, name, cb) {
-      const sites = this.fetchAll();
-      const new_sites = sites.map((s) => {
-        if(s.id === id){
-          s.name = name;
-        }
-        return s;
-      }, id, name);
-
-      fs.writeFile(file_path, JSON.stringify(new_sites), (err)=> {
-        return cb();
+  static edit(id, toEdit, cb) {
+      this.fetchAll((sites) => {
+        const updated_sites = sites.map((s) => {
+          if(s.id == id){
+            s.name = toEdit.name;
+            s.url = toEdit.url;
+          }
+          return s;
+        });
+        fs.writeFile(file_path, JSON.stringify(updated_sites), (err)=> {
+          cb();
+        });
       });
-      // fs.readFile(file_path, (err, data) => {
-      //   let sites = [];
-      //   if (!err) {
-      //     sites = JSON.parse(data);
-      //     const new_sites = sites.map((s) => {
-      //       if(s.id === id){
-      //         s.name = name;
-      //         console.log(name);
-      //       }
-      //       return s;
-      //     }, id, name);
-      //
-      //     fs.writeFile(file_path, JSON.stringify(new_sites), (err) => {
-      //       return true;
-      //     });
-      //   }
-      // });
   }
-  static fetchAll() {
-    return JSON.parse(fs.readFileSync(file_path));
+  static rewrite(sites_arr, cb) {
+    fs.writeFile(file_path, JSON.stringify(sites_arr), (err) => {
+      cb();
+    })
   }
-
-  static fetchOne(id) {
-    const sites = this.fetchAll();
-    return sites.find((site) => {
-      if(site.id == id) {
-        return site;
-      }
-    }, id);
+  static fetchAll(cb) {
+    getSitesFromFile(cb);
+  }
+  static fetchOne(id, cb) {
+    getSitesFromFile((sites) => {
+      const site = sites.find( site => site.id == id )
+      cb(site);
+    })
   }
 }
