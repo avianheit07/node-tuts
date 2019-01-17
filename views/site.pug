@@ -4,7 +4,15 @@ block content
   main
     h1 TS Sites
     p List of all Sites
-    each item in props_sites
-      li
-        a(href="/admin/site/edit/"+item.id) #{item.name}
+    div.grid
+      each item in props_sites
+        article.card.product-item
+          header.card__header
+            h1.product_title #{item.name}
+          div.card__content
+            h2.product__price #{item.url}
+            p.product__description #{item.description}
+          div.card__actions
+            a.btn(href="/admin/site/edit/"+item.id) Edit
+            a.btn(href="/admin/site/delete/"+item.id) Delete
       
