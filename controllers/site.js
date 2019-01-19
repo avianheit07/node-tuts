@@ -1,4 +1,5 @@
 const Site_model = require('../models/site.js');
+const Thumbs = require('../models/thumbs.js');
 
 exports.apiList = (req, res, next) => {
     Site_model.fetchAll((result) => {
@@ -19,6 +20,7 @@ exports.apiSiteEdit = (req, res, next) => {
   site.editOne(id, req.body)
   res.json({data: req.body, message: 'success'})
 }
+
 exports.getSitelist = (req, res, next) => {
   Site_model.fetchAll( (sites) => {
     res.render('site', {props_sites: sites, docTitle: 'Site List', props_active: 'list'})
@@ -35,7 +37,9 @@ exports.saveSite = (req, res, next) => {
 exports.editSite = (req, res, next) => {
   const id = req.params.id;
   Site_model.fetchOne(id, (site) => {
-    res.render('edit_site', {props_sites: site, docTitle: 'Site Edit', props_active: ''})
+    Thumbs.fetchAllBySite(site.id, (thumbsSite) => {
+      res.render('edit_site', {props_sites: site, docTitle: 'Site Edit', props_active: '', props_thumbs: thumbsSite})
+    })
   })
 }
 exports.updateSite = (req, res, next) => {

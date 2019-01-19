@@ -11,3 +11,21 @@ block content
         label(for="url") Url
           input.product-form(type="text" name="url" id="url" value=props_sites.url)
       button.btn(type="submit") Edit Site
+    div.thumbs-site
+      div
+        a.btn(href="/admin/thumb/add/"+props_sites.id) Add Thumb
+      if props_thumbs.length > 0
+        each item in props_thumbs
+          article.card.product-item
+            header.card__header
+              h1.product_title #{item.name.length > 20 ? item.name.substr(0, 17) + '...' : item.name}
+            div.card__content
+              p.product__description Folder: #{item.folder}
+              p.product__description Image: #{item.image}
+              p.product__description Title: #{item.title}
+              p.product__description Live: #{item.live}
+            div.card__actions
+              a.btn(href="/admin/thumb/edit/"+item.id) Edit
+              a.btn(href="/admin/delete/delete/"+item.id) Delete
+      else
+        h2 No thumbs
