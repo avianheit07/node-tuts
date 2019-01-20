@@ -1,16 +1,6 @@
-const fs = require('fs');
-const path = require('path');
-const randomString = require('random-string');
-const file_path = path.join(__dirname, '..', 'dummy_data', 'sites.json');
-const lorem = require('lorem-ipsum')
+const lorem        = require('lorem-ipsum')
+const DB           = require('../config/database')
 
-const getSitesFromFile = (callback) => {
-  fs.readFile(file_path, (err, data) => {
-    let sites = [];
-    sites = JSON.parse(data);
-    callback(sites);
-  });
-}
 module.exports = class Site {
   constructor(new_site) {
     this.id = Math.ceil(Math.random() * (100000 - 1));
@@ -22,7 +12,7 @@ module.exports = class Site {
     this.tags = randomString({length: 100})
     this.niche = randomString({length: 100})
     this.bg_image = ''
-    this.header_image = ''
+    this.header_images = ''
     this.site_logo = ''
     this.site_thumbnail = ''
     this.trailer_link = ''
@@ -33,10 +23,11 @@ module.exports = class Site {
     this.main_join_link = ''
     this.slug = randomString({length: 20})
     this.hidden_in_tours = 'no'
-    this.has_bestof_videos = 'yes'
+    this.has_bestof_video = 'yes'
     this.sitefolder = 'girls'
+    this.sitecolor = ''
     this.sitecolorhover = ''
-    this.natsiteid = Math.ceil(Math.random() * (100 - 1))
+    this.natssiteid = Math.ceil(Math.random() * (100 - 1))
     this.mobile_ma_site_order = 0
     this.mobile_clicks = 0
     this.live = 1
@@ -44,74 +35,21 @@ module.exports = class Site {
   }
 
   save() {
-    fs.readFile(file_path, (err, data) => {
-      let sites = [];
-      if (!err) {
-        sites = JSON.parse(data);
-        sites.push(this);
-        fs.writeFile(file_path, JSON.stringify(sites), (err) => {
-          if(err) {
-            return false;
-          } else {
-            return true;
-          }
-        })
-      } else {
-        return false;
-      }
-    });
+    return DB.query('INSERT INTO sites SET ?', this)
   }
 
-  editOne(id, siteObj) {
-    fs.readFile(file_path, (err, data) => {
-      let sites = [];
-      if (!err) {
-        sites = JSON.parse(data);
-        const new_sites = sites.map((site) => {
-          if(site.id == id) {
-            // console.log('found you', id, site.id, siteObj)
-            return siteObj
-          }
-          return site
-        });
-        fs.writeFile(file_path, JSON.stringify(new_sites), (err) => {
-          if(err) {
-            return false;
-          } else {
-            return true;
-          }
-        })
-      } else {
-        return false;
-      }
-    });
-  }
   static edit(id, toEdit, cb) {
-      this.fetchAll((sites) => {
-        const updated_sites = sites.map((s) => {
-          if(s.id == id){
-            s.name = toEdit.name;
-            s.url = toEdit.url;
-          }
-          return s;
-        });
-        fs.writeFile(file_path, JSON.stringify(updated_sites), (err)=> {
-          cb();
-        });
-      });
+      return DB.query('UPDATE sites SET name = ?, url = ? WHERE id = ?', [toEdit.name, toEdit.url, id]);
   }
-  static rewrite(sites_arr, cb) {
-    fs.writeFile(file_path, JSON.stringify(sites_arr), (err) => {
-      cb();
-    })
+
+  static fetchAll() {
+    return DB.execute('SELECT * FROM sites');
   }
-  static fetchAll(cb) {
-    getSitesFromFile(cb);
+  static fetchOne(id) {
+    return DB.query('SELECT * FROM sites WHERE id = ?', [id])
   }
-  static fetchOne(id, cb) {
-    getSitesFromFile((sites) => {
-      const site = sites.find( site => site.id == id )
-      cb(site);
-    })
+
+  static deleteOne(id) {
+    return DB.query('DELETE FROM sites WHERE id = ?', [id])
   }
 }

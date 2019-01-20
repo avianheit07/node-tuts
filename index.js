@@ -1,12 +1,13 @@
-const express = require('express');
-const fetch = require('node-fetch');
-const siteRoutes = require('./routes/site');
+const express     = require('express');
+const fetch       = require('node-fetch');
+const siteRoutes  = require('./routes/site');
 const thumbRoutes = require('./routes/thumb');
-const apiRoutes = require('./routes/api');
-const bodyParser = require('body-parser');
-const app = express();
-const path = require('path');
-const jsonParser = bodyParser.json({type: 'application/*+json'});
+const apiRoutes   = require('./routes/api');
+const bodyParser  = require('body-parser');
+const app         = express();
+const path        = require('path');
+const jsonParser  = bodyParser.json({type: 'application/*+json'});
+const DB          = require('./config/database');
 
 app.set('view engine', 'pug');
 app.set('views', 'views');

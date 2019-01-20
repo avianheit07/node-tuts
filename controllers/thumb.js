@@ -8,22 +8,19 @@ exports.saveThumb = (req, res, next) => {
   const thumbName = req.body.name;
   const siteId    = req.body.siteId;
   const thumb     = new Thumbs(null, thumbName, '', '', '', siteId);
-  thumb.save();
-  res.redirect("/admin/site");
+  thumb.save()
+  .then( () => {
+    res.redirect("/admin/site");
+  })
+  .catch( (err) => {
+    res.json(err)
+  })
 }
 exports.editThumb = (req, res, next) => {
   const thumbId = req.params.thumbId;
-  Thumbs.fetchById(thumbId, (result) => {
-    console.log({
-      props_id: result.id,
-      props_siteId: result.siteId,
-      isNew: false,
-      props_name: result.name,
-      props_folder: result.folder,
-      props_image: result.image,
-      props_title: result.title,
-      props_live: result.live
-    })
+  Thumbs.fetchById(thumbId)
+  .then( (data) => {
+    const result = data[0][0];
     res.render('add_thumb',
     {
       props_id: result.id,
@@ -40,15 +37,31 @@ exports.editThumb = (req, res, next) => {
 
 exports.updateThumb = (req, res, next) => {
   const result = req.body;
-  const thumb = new Thumbs( req.params.thumbId, result.name, result.folder, result.image, result.title, result.siteId, result.live);
-  console.log(thumb);
-  thumb.save();
-  res.redirect("/admin/site");
-
+  result.id = req.params.thumbId;
+  Thumbs.edit(result)
+  .then( () => {
+    res.redirect("/admin/site");
+  })
+  .catch( (err) => {
+    console.log(err)
+  });
 }
-
 exports.showAll = (req, res, next) => {
-  Thumbs.fetchAll( (results) => {
-    res.render('thumbs-all', {props_thumbs: results, props_active: 'thumbs-all'})
+  Thumbs.fetchAll()
+  .then( (results) => {
+    res.render('thumbs-all', {props_thumbs: results[0], props_active: 'thumbs-all'})
+  })
+  .catch( (err) => {
+    res.json(err)
+  })
+}
+exports.deleteThumb = (req, res, next) => {
+  const thumbId = req.params.thumbId;
+  Thumbs.deleteThumb(thumbId)
+  .then( () => {
+    res.redirect('/admin/thumb/all')
+  })
+  .catch( (err) => {
+    res.json(err)
   })
 }
