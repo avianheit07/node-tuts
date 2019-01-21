@@ -1,0 +1,18 @@
+include common/layout.pug
+
+block content
+  main
+    div
+      a.btn(href="/admin/thumb/add/") Add Thumb
+  each item in props_thumbs    
+    article.card.product-item
+      header.card__header
+        h1.product_title #{item.name.length > 20 ? item.name.substr(0, 17) + '...' : item.name}
+      div.card__content
+        p.product__description Folder: #{item.folder}
+        p.product__description Image: #{item.image}
+        p.product__description Title: #{item.title}
+        p.product__description Live: #{item.live}
+      div.card__actions
+        a.btn(href="/admin/thumb/edit/"+item.id) Edit
+        a.btn(href="/admin/thumb/delete/"+item.id) Delete

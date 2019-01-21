@@ -1,0 +1,29 @@
+extends common/layout.pug
+
+block content
+  main
+    if isNew
+      h1 Add Thumb
+      form.product-form(action="/admin/thumb/save" method="POST")
+          div.form-control
+              input(type="hidden" name="siteId" id="siteid" value=props_siteId)
+              label(for="name") Thumb Name
+              input.product-form(type="text" name="name" id="name")
+          button.btn(type="submit") Add Thumb
+    else
+      h1 Edit Thumb
+      form.product-form(action="/admin/thumb/update/"+props_id method="POST")
+          div.form-control
+              input(type="hidden" name="siteId" id="siteid" value=props_siteId)
+              input(type="hidden" name="thumbId" id="thumbId" value=props_id)
+              label(for="name") Thumb Name
+              input.product-form(type="text" name="name" id="name" value=props_name)
+              label(for="folder") Folder
+              input.product-form(type="text" name="folder" id="folder" value=props_folder)
+              label(for="image") Image
+              input.product-form(type="text" name="image" id="image" value=props_image)
+              label(for="title") Title
+              input.product-form(type="text" name="title" id="title" value=props_title)
+              label(for="live") Is Live
+              input(type="checkbox" name="live" id="live" checked=props_live)
+          button.btn(type="submit") Add Thumb
