@@ -1,4 +1,5 @@
 const lorem        = require('lorem-ipsum')
+const randomString = require('random-string');
 const DB           = require('../config/database')
 
 module.exports = class Site {
@@ -43,7 +44,7 @@ module.exports = class Site {
   }
 
   static fetchAll() {
-    return DB.execute('SELECT * FROM sites');
+    return DB.query('SELECT * FROM sites');
   }
   static fetchOne(id) {
     return DB.query('SELECT * FROM sites WHERE id = ?', [id])
