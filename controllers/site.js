@@ -9,22 +9,53 @@ exports.apiList = (req, res, next) => {
     .catch( err => {
       res.json({data: [], message: 'failed', error: err})
     })
-}
+} // get All Sites
 exports.apiSite = (req, res, next) => {
   const id = req.params.id;
-  Sites.fetchOne(id, (result) => {
-      res.json({data: result, message: 'success', error: null})
+  Sites.fetchOne(id)
+  .then( (results) => {
+    Thumbs.fetchAllBySite(results[0][0].id)
+    .then( (thumbs_res) => {
+      results[0][0].thumbs = thumbs_res[0];
+      res.json({data: results[0][0], message: 'success', error: null})
+    })
+    .catch( (err2) => {
+      res.json({data: [], message: 'failed', error: err2})
+    })
+  });
+} // get site by id
+exports.apiCreate = (req, res, next) => {
+  const site = new Sites(req.body.site);
+  site.save()
+  .then( (result) => {
+    res.json({data: results[0][0], message: 'success', error: null})
+  })
+  .catch( err => {
+    res.json({data: [], message: 'failed', error: err2})
+  });
+
+}
+exports.apiSaveSite = (req, res, next) => { // save site
+  const id = req.body.id;
+
+  Sites.edit(id, req.body)
+  .then( (results) => {
+    res.json({data: result[0], message: 'success', error: null});
+  })
+  .catch( (err) => {
+    res.json(err)
   });
 }
-exports.apiSiteEdit = (req, res, next) => {
-  const name = req.body.name;
-  const site = new Sites(name);
-  const id = parseInt(req.params.id);
-    console.log('fucker', name)
-  site.editOne(id, req.body)
-  res.json({data: req.body, message: 'success'})
+exports.apiSiteDelete = (req, res, next) => {
+  const id = req.params.id;
+  Sites.deleteOne(id)
+  .then( (result) => {
+    res.json({data: result[0], message: 'success', error: null});
+  })
+  .catch( (err) => {
+    res.json({data: [], message: 'failed', error: err});
+  })
 }
-
 exports.getSitelist = (req, res, next) => {
   Sites.fetchAll()
   .then( (results) => {
@@ -41,7 +72,7 @@ exports.saveSite = (req, res, next) => {
   const site = new Sites(req.body.site);
   site.save()
   .then( (result) => {
-    console.log(result);// {fieldCount, affectedRows, insertId, info, serverStatus, warningStatus}
+    // {fieldCount, affectedRows, insertId, info, serverStatus, warningStatus}
     res.redirect("/admin/site");
   })
   .catch( err => {
