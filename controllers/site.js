@@ -59,7 +59,7 @@ exports.apiSiteDelete = (req, res, next) => {
 exports.getSitelist = (req, res, next) => {
   Sites.fetchAll()
   .then( (results) => {
-    res.render('site', {props_sites: results[0], docTitle: 'Site List', props_active: 'list'})
+    res.render('site', {props_sites: results, docTitle: 'Site List', props_active: 'list'})
   })
   .catch( (err) => {
     console.log(err)
@@ -84,13 +84,7 @@ exports.editSite = (req, res, next) => {
   const id = req.params.id;
   Sites.fetchOne(id)
   .then( (results) => {
-    Thumbs.fetchAllBySite(results[0][0].id)
-    .then( (thumbs_res) => {
-      res.render('edit_site', {props_sites: results[0][0], docTitle: 'Site Edit', props_active: '', props_thumbs: thumbs_res[0]})
-    })
-    .catch( (err2) => {
-      console.log(err2)
-    })
+      res.render('edit_site', {props_sites: results, docTitle: 'Site Edit', props_active: '', props_thumbs: []})
   })
   .catch( (err) => {
     console.log(err)
@@ -100,7 +94,7 @@ exports.updateSite = (req, res, next) => {
   const id = req.body.id;
   const name = req.body.site;
   const url = req.body.url;
-  Sites.edit(id, {name: name, url: url})
+  Sites.update(id, {name: name, url: url})
   .then( () => {
     res.redirect("/admin/site");
   })
@@ -111,7 +105,7 @@ exports.updateSite = (req, res, next) => {
 }
 exports.deleteSite = (req, res, next) => {
   const id = req.params.id;
-  Sites.deleteOne(id)
+  Sites.delete(id)
   .then( () => {
     res.redirect('/admin/site');
   })

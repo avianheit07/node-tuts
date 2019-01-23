@@ -5,7 +5,7 @@ block content
     h1 Edit Here
     form.product-form(action="/admin/site/update" method="POST")
       div.form-control
-        input(type="hidden" name="id" value=props_sites.id)
+        input(type="hidden" name="id" value=props_sites._id)
         label(for="title") Site Name
           input.product-form(type="text" name="site" id="site" value=props_sites.name)
         label(for="url") Url

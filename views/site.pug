@@ -10,9 +10,10 @@ block content
           header.card__header
             h1.product_title #{item.name}
           div.card__content
-            h2.product__price #{item.url}
+            p.product__price 
+              strong URL: #{item.url}
             p.product__description #{item.description}
           div.card__actions
-            a.btn(href="/admin/site/edit/"+item.id) Edit
-            a.btn(href="/admin/site/delete/"+item.id) Delete
+            a.btn(href="/admin/site/edit/"+item._id) Edit
+            a.btn(href="/admin/site/delete/"+item._id) Delete
       
