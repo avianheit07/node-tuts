@@ -1,5 +1,6 @@
-const Sites = require('../models/site.js');
-const Thumbs = require('../models/thumbs.js');
+const Sites                = require('../models/site.js');
+const Thumbs               = require('../models/thumbs.js');
+const { validationResult } = require('express-validator/check');
 
 exports.apiList = (req, res, next) => {
     Sites.fetchAll()
@@ -70,6 +71,16 @@ exports.addSite = (req, res, next) => {
 }
 exports.saveSite = (req, res, next) => {
   const site = new Sites(req.body.site);
+
+  const errors = validationResult(req);
+  console.log('errors', errors.array());
+  if(!errors.isEmpty()) {
+    return res.status(422).render('add_site', {
+        props_active: 'site-new',
+        docTitle: 'Add Site',
+        errorMessage: errors.array()
+    }) // 422 validation failed
+  }
   site.save()
   .then( (result) => {
     // {fieldCount, affectedRows, insertId, info, serverStatus, warningStatus}
@@ -97,17 +108,43 @@ exports.editSite = (req, res, next) => {
   });
 }
 exports.updateSite = (req, res, next) => {
-  const id = req.body.id;
+  const id   = req.body.id;
   const name = req.body.site;
-  const url = req.body.url;
-  Sites.edit(id, {name: name, url: url})
-  .then( () => {
-    res.redirect("/admin/site");
-  })
-  .catch( (err) => {
-    res.json(err)
-  });
+  const url  = req.body.url;
 
+  const errors = validationResult(req);
+  console.log('errors', errors.array());
+  if(!errors.isEmpty()) {
+
+    Sites.fetchOne(id)
+    .then( (results) => {
+      Thumbs.fetchAllBySite(results[0][0].id)
+      .then( (thumbs_res) => {
+
+        return res.status(422).render('edit_site', {
+            props_sites: results[0][0],
+            props_active: '',
+            docTitle: 'Site Edit',
+            props_thumbs: thumbs_res[0],
+            errorMessage: errors.array()
+        }) // 422 validation failed
+      })
+      .catch( (err2) => {
+        console.log(err2)
+      })
+    })
+    .catch( (err) => {
+      console.log(err)
+    });
+  } else {
+      Sites.edit(id, {name: name, url: url})
+      .then( () => {
+        res.redirect("/admin/site");
+      })
+      .catch( (err) => {
+        res.json(err)
+      });
+  }
 }
 exports.deleteSite = (req, res, next) => {
   const id = req.params.id;
