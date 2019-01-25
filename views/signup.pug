@@ -1,0 +1,18 @@
+include common/layout.pug
+
+block content
+  main
+    if errorMessage
+      each item in errorMessage
+        div.user-message.user-message--error #{item.msg}
+    form.login-form(action="/admin/login/signup" method="POST")
+      div.form-control
+        label(for="email") E-mail
+          input(type="email" name="email" id="email")
+      div.form-control
+        label(for="password") Password
+          input(type="password" name="password" id="password")
+      div.form-control
+        label(for="confirmPassword") Confirm Password
+          input(type="password" name="confirmPassword" id="confirmPassword")
+      button.btn(type="submit") Signup

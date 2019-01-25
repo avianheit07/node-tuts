@@ -2,15 +2,16 @@ const express         = require('express');
 const router          = express.Router();
 const { check, body }       = require('express-validator/check');
 const sitesController = require('../controllers/site.js')
+const isAuth = require('../middleware/isAuth')
 
-router.get('/', sitesController.getSitelist);
-router.get('/add', sitesController.addSite);
-router.get('/edit/:id', sitesController.editSite);
+router.get('/', isAuth, sitesController.getSitelist);
+router.get('/add', isAuth, sitesController.addSite);
+router.get('/edit/:id', isAuth, sitesController.editSite);
 router.post('/save',
   check('site')
     .exists({checkNull: true, checkFalsy: true})
     .withMessage('Input is empty!'),
-  sitesController.saveSite);
+  isAuth, sitesController.saveSite);
 router.post('/update',
     check('url')
       .isURL()
@@ -19,7 +20,7 @@ router.post('/update',
     body('site')
       .exists({checkNull: true, checkFalsy: true})
       .withMessage('Input should not be empty'),
-    sitesController.updateSite);
-router.get('/delete/:id', sitesController.deleteSite);
+    isAuth, sitesController.updateSite);
+router.get('/delete/:id', isAuth, sitesController.deleteSite);
 
 exports.routes = router;

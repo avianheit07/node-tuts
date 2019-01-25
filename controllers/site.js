@@ -60,14 +60,14 @@ exports.apiSiteDelete = (req, res, next) => {
 exports.getSitelist = (req, res, next) => {
   Sites.fetchAll()
   .then( (results) => {
-    res.render('site', {props_sites: results[0], docTitle: 'Site List', props_active: 'list'})
+    res.render('site', {props_sites: results[0], docTitle: 'Site List', props_active: 'list', isAuthenticated: req.session.isLoggedIn})
   })
   .catch( (err) => {
     console.log(err)
   })
 }
 exports.addSite = (req, res, next) => {
-  res.render('add_site', {props_active: 'site-new', docTitle: 'Add Site'});
+  res.render('add_site', {props_active: 'site-new', docTitle: 'Add Site', isAuthenticated: req.session.isLoggedIn});
 }
 exports.saveSite = (req, res, next) => {
   const site = new Sites(req.body.site);
@@ -97,7 +97,7 @@ exports.editSite = (req, res, next) => {
   .then( (results) => {
     Thumbs.fetchAllBySite(results[0][0].id)
     .then( (thumbs_res) => {
-      res.render('edit_site', {props_sites: results[0][0], docTitle: 'Site Edit', props_active: '', props_thumbs: thumbs_res[0]})
+      res.render('edit_site', {props_sites: results[0][0], docTitle: 'Site Edit', props_active: '', props_thumbs: thumbs_res[0], isAuthenticated: req.session.isLoggedIn})
     })
     .catch( (err2) => {
       console.log(err2)
