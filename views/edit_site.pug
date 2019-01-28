@@ -3,6 +3,9 @@ extends common/layout.pug
 block content
   main
     h1 Edit Here
+    if errorMessage
+      each item in errorMessage
+        div.user-message.user-message--error #{item.msg}
     form.product-form(action="/admin/site/update" method="POST")
       div.form-control
         input(type="hidden" name="id" value=props_sites.id)
