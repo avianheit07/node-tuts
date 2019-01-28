@@ -2,8 +2,11 @@ extends common/layout.pug
 
 block content
   main
-      form.product-form(action="/admin/site/save" method="POST")
-          div.form-control
-              label(for="title") Site Name
-              input.product-form(type="text" name="site" id="site")
-          button.btn(type="submit") Add Site
+    if errorMessage
+      div.user-message.user-message--error #{errorMessage[0].msg}
+      
+    form.product-form(action="/admin/site/save" method="POST")
+        div.form-control
+            label(for="title") Site Name
+            input.product-form(type="text" name="site" id="site")
+        button.btn(type="submit") Add Site

@@ -2,7 +2,7 @@ const Thumbs = require('../models/thumbs.js');
 
 exports.addThumb = (req, res, next) => {
   const siteId = req.params.siteId;
-  res.render('add_thumb', {props_siteId: siteId, isNew: true})
+  res.render('add_thumb', {props_siteId: siteId, isNew: true, isAuthenticated: req.session.isLoggedIn})
 }
 exports.saveThumb = (req, res, next) => {
   const thumbName = req.body.name;
@@ -30,7 +30,7 @@ exports.editThumb = (req, res, next) => {
       props_folder: result.folder,
       props_image: result.image,
       props_title: result.title,
-      props_live: result.live
+      props_live: result.live, isAuthenticated: req.session.isLoggedIn
     })
   });
 }
@@ -49,7 +49,7 @@ exports.updateThumb = (req, res, next) => {
 exports.showAll = (req, res, next) => {
   Thumbs.fetchAll()
   .then( (results) => {
-    res.render('thumbs-all', {props_thumbs: results[0], props_active: 'thumbs-all'})
+    res.render('thumbs-all', {props_thumbs: results[0], props_active: 'thumbs-all', isAuthenticated: req.session.isLoggedIn})
   })
   .catch( (err) => {
     res.json(err)

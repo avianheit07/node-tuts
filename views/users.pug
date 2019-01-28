@@ -1,0 +1,10 @@
+include common/layout
+
+block content
+  main
+    each item in props_users
+      article.card.product-item
+        header.card__header
+          p.product_title #{item.email}
+        div.card__actions
+          a.btn(href="/admin/user/delete/"+item.id) Delete
