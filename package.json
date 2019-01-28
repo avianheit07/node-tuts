@@ -8,15 +8,21 @@
     "npm": "5.0.3"
   },
   "scripts": {
+    "buid": "tsc",
     "start": "node index.js",
-    "server": "nodemon index.js",
+    "server": "nodemon --watch 'src/**/*.*' --exec 'ts-node' src/index.ts",
     "client": "npm run start --prefix client",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc"
   },
-  "author": "",
+  "author": "Paper Chrisp",
   "license": "ISC",
   "dependencies": {
+    "@types/express": "^4.16.1",
+    "@types/express-session": "^1.15.11",
+    "@types/mysql2": "github:types/mysql2",
+    "@types/sequelize": "^4.27.34",
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
     "ejs": "^2.6.1",
@@ -28,7 +34,10 @@
     "mysql2": "^1.6.4",
     "node-fetch": "^2.3.0",
     "pug": "^2.0.3",
-    "random-string": "^0.2.0"
+    "random-string": "^0.2.0",
+    "sequelize": "^4.42.0",
+    "ts-node": "^8.0.2",
+    "typescript": "^3.2.4"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
