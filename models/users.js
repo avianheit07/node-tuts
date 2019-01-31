@@ -4,6 +4,7 @@ module.exports = class Users {
   constructor(userObj) {
     this.email = userObj.email;
     this.password = userObj.password;
+    this.name = userObj.name;
   }
 
   save() {
