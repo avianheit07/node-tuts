@@ -1,4 +1,5 @@
 const User   = require('../models/users');
+const Site   = require('../models/site');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 module.exports = {
@@ -54,5 +55,18 @@ module.exports = {
       }
       console.log('empty', userData)
       return {};
+    },
+
+    getSites: async function({ SiteData }, req) {
+      console.log('here');
+      const siteResults = await Site.fetchAll();
+      console.log(siteResults[0])
+      if(siteResults[0].count > 0)
+        return {sites: siteResults[0], totalSites: siteResults[0].count}
+      return {}
+    },
+
+    createSite: async ({ siteInput }, req) => {
+      console.log(siteInput);
     }
 }

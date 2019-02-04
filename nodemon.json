@@ -1,0 +1,8 @@
+{
+    "env": {
+        "DB": "",
+        "host": "",
+        "username": "",
+        "password": ""
+    }
+}

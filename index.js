@@ -7,12 +7,22 @@ const path        = require('path');
 const jsonParser  = bodyParser.json({type: 'application/*+json'});
 const DB          = require('./config/database');
 const graphqlHttp = require('express-graphql');
-
+const helmet   = require('helmet')
 const graphqlSchema = require('./graphql/schema');
 const graphqlResolver = require('./graphql/resolvers');
-
+const compression = require('compression');
+const morgan = require('morgan');
+const fs = require('fs')
+const path = require('path')
 app.set('view engine', 'pug');
 app.set('views', 'views');
+app.use(helmet());
+app.use(compression());
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, 'access.log'),
+  {flags: 'a'}
+);
+app.use(morgan('combined', {stream: accessLogStream}));
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'public')))

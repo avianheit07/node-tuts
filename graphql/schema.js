@@ -13,14 +13,30 @@ module.exports = buildSchema(`
     password: String!
   }
 
-  type RootMutation {
-    createUser(userInput: UserInputData): User!
+  input SiteInputData {
+    name: String!
+    url: String!
+  }
+  type Site {
+    id: ID!
+    name: String!
+    url: String!
+  }
+
+  type SiteData {
+    sites: [Site!]!
+    totalSites: Int!
   }
 
   type RootQuery {
     getUser(email: String!): User!
+    getSites: SiteData!
   }
 
+  type RootMutation {
+    createUser(userInput: UserInputData): User!
+    createSite(siteInput: SiteInputData): Site!
+  }
   schema {
     query: RootQuery
     mutation: RootMutation
