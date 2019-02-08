@@ -1,25 +1,17 @@
-const DB = require('../config/database')
+const Mongoose = require('mongoose');
 
-module.exports = class Users {
-  constructor(userObj) {
-    this.email = userObj.email;
-    this.password = userObj.password;
-    this.name = userObj.name;
+const userSchema = new Mongoose.Schema({
+  email: {
+    type: String,
+    required: true
+  },
+  password: {
+    type: String,
+    required: true
+  },
+  status: {
+    type: Number,
+    default: 0 // 0 - new, 1 - activated
   }
-
-  save() {
-    return DB.query("INSERT into users SET ?", this);
-  }
-  static fetchAll() {
-    return DB.query("SELECT * from users");
-  }
-  static fetchOneByEmail(email) {
-    return DB.query("SELECT * from users where email=?", [email]);
-  }
-  static deleteOne(id) {
-    return DB.query("DELETE FROM users where id = ?", [id]);
-  }
-  static authenticate(userObj) {
-    return DB.query("SELECT * FROM users where email = ? AND password = ? ", [userObj.email, userObj.password])
-  }
-}
+});
+module.exports = Mongoose.model('User', userSchema);

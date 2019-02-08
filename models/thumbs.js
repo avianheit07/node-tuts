@@ -1,37 +1,32 @@
-const randomString = require('random-string');
-const lorem        = require('lorem-ipsum');
-const DB           = require('../config/database');
+import * as Mongoose from 'mongoose';
 
+const thumbsSchema = Mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
+  folder: {
+    type: String,
+    required: true,
+  },
+  image: {
+    type: String,
+    required: true,
+  },
+  title: {
+    type: Number,
+    required: true,
+  },
+  siteId: {
+    type: Schema.Types.ObjectId,
+    ref: 'Site',
+    required: true,
+  },
+  live: {
+    type: Number,
+    required: true,
+    default: 0 // 0 - hidden, 1 - live
+  }
+})
 
-module.exports = class Thumbs {
-  constructor(id, name, folder, image, title, siteId, live = null) {
-    this.id     = id;
-    this.name   = name;
-    this.folder = folder;
-    this.image  = image;
-    this.title  = title;
-    this.siteId = siteId;
-    this.live   = (live === null) ? false : (live === 'on' ? true : false);
-  }
-  save() {
-    return DB.query('INSERT INTO thumbs SET ?', this)
-  }
-  static fetchAllBySite(siteId) {
-    return DB.query('SELECT * FROM thumbs WHERE siteId = ?', [siteId]);
-  }
-
-  static fetchById(thumbId) {
-    return DB.query('SELECT * FROM thumbs WHERE id = ?', [thumbId])
-  }
-
-  static fetchAll() {
-    return DB.query('SELECT * FROM thumbs');
-  }
-  static edit(data) {
-    return DB.query('UPDATE thumbs SET name = ?, folder = ?, image = ?, title = ?, siteId = ?, live = ? WHERE id = ?',
-    [data.name, data.folder, data.image, data.title, data.siteId, data.live, data.id])
-  }
-  static deleteThumb(id) {
-    return DB.query('DELETE FROM thumbs where id = ?', [id]);
-  }
-}
+module.exports = Mongoose.model('Thumb', thumbsSchema);

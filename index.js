@@ -1,21 +1,18 @@
 const express     = require('express');
 const fetch       = require('node-fetch');
-const bodyParser  = require('body-parser');
 const app         = express();
 const session     = require('express-session');
 const path        = require('path');
-const jsonParser  = bodyParser.json({type: 'application/*+json'});
-const DB          = require('./config/database');
 const graphqlHttp = require('express-graphql');
-
 const graphqlSchema = require('./graphql/schema');
 const graphqlResolver = require('./graphql/resolvers');
+const mongoose = require('mongoose');
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(express.urlencoded({extended: false}));
+app.use(express.json());
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(
   session({
     secret: 'my secret',
@@ -61,4 +58,16 @@ app.use((req, res, next) => {
   next();
 })
 const PORT = process.env.PORT || 5000;
-app.listen(PORT);
+mongoose
+  .connect('mongodb+srv://avianheit:uRszrpppnLDs3G2@cluster0-v2xag.mongodb.net/test?retryWrites=true')
+  .then( result => {
+    if(result) {
+      console.log('connect to PORT: ', PORT);
+      app.listen(PORT);
+    } else {
+      console.log('Failed to connect')
+    }
+  })
+  .catch( err => console.log(err));
+
+

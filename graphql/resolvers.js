@@ -1,4 +1,6 @@
 const User   = require('../models/users');
+// const Site   = require('../models/site');
+// const Thumb   = require('../models/thumbs');
 const bcrypt = require('bcryptjs');
 const validator = require('validator');
 module.exports = {
@@ -26,8 +28,8 @@ module.exports = {
         throw error;
       }
 
-      const existingUser = await User.fetchOneByEmail(email);
-      if(existingUser[0].length > 0) { // dont create
+      const existingUser = await User.findOne({ email: email });
+      if(existingUser) { // dont create
         const error = new Error('User exists already!');
         throw error;
       }
@@ -41,16 +43,17 @@ module.exports = {
 
       const user = new User(toCreate);
       const createdUser = await user.save();
-      const toPass = { ...toCreate, id: createdUser[0].insertId};
+      const toPass = { ...toCreate, _id: createdUser._id.toString()};
       console.log('created', toPass);
       return toPass;
     },
-    getUser: async function({ email }, req) {
-      const userData = await User.fetchOneByEmail(email);
+    getUser: async function({ email, password}, req) {
+      console.log('called here');
+      const userData = await User.findOne({email: email});
 
-      if(userData[0].length > 0) {
-        console.log('found', userData[0][0]);
-        return userData[0][0];
+      if(userData) {
+        console.log('found', userData);
+        return userData;
       }
       console.log('empty', userData)
       return {};

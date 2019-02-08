@@ -3,8 +3,9 @@
 import React, {Component} from 'react';
 import { BrowserRouter, Route} from 'react-router-dom';
 import Header from './Header';
-import Sites from './sites/Sites.js';
-import Edit_Site from './sites/Edit.js';
+import Sites from './sites/Sites';
+import Edit_Site from './sites/Edit';
+import Login from './auth/Login';
 const Dashboard = () => <h2>Thumbs</h2>;
 const Landing = () => <h2>Landing</h2>;
 
@@ -16,7 +17,7 @@ class App extends Component{
         <Header />
         <BrowserRouter>
           <div className="container">
-            <Route exact path="/" component={Landing} />
+            <Route exact path="/" component={Login} />
             <Route path="/thumbs" component={Dashboard} />
             <Route exact path="/sites" component={Sites} />
             <Route exact path="/sites/edit/:id" component={Edit_Site} />
