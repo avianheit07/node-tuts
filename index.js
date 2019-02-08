@@ -4,12 +4,22 @@ const app         = express();
 const session     = require('express-session');
 const path        = require('path');
 const graphqlHttp = require('express-graphql');
+const helmet   = require('helmet')
 const graphqlSchema = require('./graphql/schema');
 const graphqlResolver = require('./graphql/resolvers');
+const compression = require('compression');
 const mongoose = require('mongoose');
+const morgan = require('morgan');
 
 app.set('view engine', 'pug');
 app.set('views', 'views');
+app.use(helmet());
+app.use(compression());
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, 'access.log'),
+  {flags: 'a'}
+);
+app.use(morgan('combined', {stream: accessLogStream}));
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
