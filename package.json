@@ -17,18 +17,22 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "concurrently": "^4.1.0",
     "ejs": "^2.6.1",
     "express": "^4.16.4",
+    "express-graphql": "^0.7.1",
     "express-handlebars": "^3.0.0",
     "express-session": "^1.15.6",
     "express-validator": "^5.3.1",
+    "graphql": "^14.1.1",
     "lorem-ipsum": "^1.0.6",
     "mysql2": "^1.6.4",
     "node-fetch": "^2.3.0",
     "pug": "^2.0.3",
-    "random-string": "^0.2.0"
+    "random-string": "^0.2.0",
+    "validator": "^10.11.0"
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
