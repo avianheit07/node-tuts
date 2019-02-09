@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route} from 'react-router-dom';
+// import { BrowserRouter, Route} from 'react-router-dom';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 import axios from 'axios';
@@ -46,7 +46,7 @@ class Edit extends Component {
               <p> Url: {this.state.site.url} <br/>
               Acronym: {this.state.site.acronym}
               </p>
-              <a href="" className="secondary-content" onClick={this.clickHandler}><i className="material-icons">Edit</i></a>
+              <a href="http://example.com" className="secondary-content" onClick={this.clickHandler}><i className="material-icons">Edit</i></a>
             </li>
         </ul>
       </div>

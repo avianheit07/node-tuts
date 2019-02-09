@@ -7,7 +7,6 @@ import Sites from './sites/Sites';
 import Edit_Site from './sites/Edit';
 import Login from './auth/Login';
 const Dashboard = () => <h2>Thumbs</h2>;
-const Landing = () => <h2>Landing</h2>;
 
 
 class App extends Component{

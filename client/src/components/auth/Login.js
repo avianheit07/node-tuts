@@ -24,10 +24,13 @@ class Login extends Component {
     //     }
     // }
     onChangeHandler = (property_name, value) => {
-        this.setState({[property_name]: value})
+        const temp_state = {};
+        temp_state[property_name] = value;
+
+        this.setState(temp_state);
     }
-    submitHandler() {
-        console.log('query here');
+    submitHandler = () => {
+
         const graphqlQuery = {
             query: `
                 {
@@ -38,22 +41,21 @@ class Login extends Component {
             `
         }
         axios.post('/graphql', graphqlQuery)
-        .then((response) => {
-            console.log(response);
-        }).catch( (err) => console.log(err));
+        .then(response => console.log(response))
+        .catch( err => console.log(err));
     }
     render() {
         return (
             <div>
                 <form onSubmit={this.submitHandler}>
                     <div className="input">
-                        <label for="email">Email</label>
-                        <input type="text" id="email" required="required" onChange={(e) => this.onChangeHandler('email', e.target.value)}>
+                        <label htmlFor="email">Email</label>
+                        <input type="text" id="email" required="required" value={this.state.email} onChange={(e) => this.onChangeHandler('email', e.target.value)}>
                         </input>
                     </div>
                     <div className="input">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" required="required" onChange={(e) => this.onChangeHandler('password', e.target.value)}>
+                        <label htmlFor="password">Password</label>
+                        <input type="password" id="password" required="required" value={this.state.password} onChange={(e) => this.onChangeHandler('password', e.target.value)}>
                         </input>
                     </div>
                     <div className="input">

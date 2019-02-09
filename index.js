@@ -1,6 +1,7 @@
 const express     = require('express');
 const fetch       = require('node-fetch');
 const app         = express();
+const fs = require('fs')
 const session     = require('express-session');
 const path        = require('path');
 const graphqlHttp = require('express-graphql');

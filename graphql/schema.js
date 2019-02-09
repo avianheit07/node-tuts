@@ -29,12 +29,8 @@ module.exports = buildSchema(`
   }
 
   type RootQuery {
-<<<<<<< HEAD
     getUser(email: String!, password: String!): User!
-=======
-    getUser(email: String!): User!
     getSites: SiteData!
->>>>>>> ff39e7a819b958b9a954f4a9865d15c8cd37f3fc
   }
 
   type RootMutation {
