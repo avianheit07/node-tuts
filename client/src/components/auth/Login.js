@@ -1,53 +1,26 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 
 class Login extends Component {
     state = {
         email: '',
         password: ''
     }
-    // state = {
-    //     loginForm: {
-    //         email: {
-    //             value: '',
-    //             valid: false,
-    //             touched: false,
-    //             validators: [required, email]
-    //         },
-    //         password: {
-    //             value: '',
-    //             valid: false,
-    //             touched: false,
-    //             validators: [required, length({min: 5})]
-    //         },
-    //         formIsValid: false
-    //     }
-    // }
     onChangeHandler = (property_name, value) => {
         const temp_state = {};
         temp_state[property_name] = value;
 
         this.setState(temp_state);
     }
-    submitHandler = () => {
-
-        const graphqlQuery = {
-            query: `
-                {
-                    getUser(email: "${this.state.email}", password: "${this.state.password}") {
-                        _id
-                    }
-                }
-            `
-        }
-        axios.post('/graphql', graphqlQuery)
-        .then(response => console.log(response))
-        .catch( err => console.log(err));
-    }
     render() {
         return (
             <div>
-                <form onSubmit={this.submitHandler}>
+                <form onSubmit={
+                    e =>
+                    this.props.onLogin(e, {
+                        email: this.state.email,
+                        password: this.state.password
+                    })
+                }>
                     <div className="input">
                         <label htmlFor="email">Email</label>
                         <input type="text" id="email" required="required" value={this.state.email} onChange={(e) => this.onChangeHandler('email', e.target.value)}>

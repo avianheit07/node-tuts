@@ -19,8 +19,9 @@ class Sites extends Component {
 
       axios.get('/api/site')
         .then(res => {
-					console.log('called')
-          this.setState({sites: res.data.data})
+					console.log('called', this.props)
+          // this.setState({sites: res.data.data})
+          this.setState({sites: []})
         });
   }
   render() {

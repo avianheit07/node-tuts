@@ -48,17 +48,35 @@ module.exports = {
       return toPass;
     },
     getUser: async function({ email, password}, req) {
-      console.log('called here');
       const userData = await User.findOne({email: email});
 
       if(userData) {
-        console.log('found', userData);
         return userData;
       }
       console.log('empty', userData)
-      return {};
+      const error = new Error('Invalid User');
+      error.code = 422;
+      throw error;
     },
+    login: async function({email, password}, req) {
+      const userData = await User.findOne({email: email});
 
+      if(userData) {
+        const passCompare = await bcrypt.compare(password, userData.password);
+        if(!passCompare) { // password not the same
+          console.log('incorrect login', userData)
+          const error = new Error('Incorrect Login Data');
+          error.code = 401;
+          throw error;
+        }
+        console.log('correct', userData);
+        return { _id: userData._id.toString()}; // else return id
+      }
+      console.log('empty', userData)
+      const error = new Error('Invalid User');
+      error.code = 422;
+      throw error;
+    },
     getSites: async function({ SiteData }, req) {
       console.log('here');
       const siteResults = await Site.fetchAll();

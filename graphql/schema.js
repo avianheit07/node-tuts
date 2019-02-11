@@ -23,6 +23,10 @@ module.exports = buildSchema(`
     url: String!
   }
 
+  type AuthData {
+    _id: String!
+  }
+
   type SiteData {
     sites: [Site!]!
     totalSites: Int!
@@ -30,6 +34,7 @@ module.exports = buildSchema(`
 
   type RootQuery {
     getUser(email: String!, password: String!): User!
+    login(email: String!, password: String!): AuthData!
     getSites: SiteData!
   }
 
